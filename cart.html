@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Your Shopping Cart</h1>
+        <a href="index.html">🏠 Back to Shop</a>
+    </header>
+
+    <section id="cart-items"></section>
+    <button id="checkout">Checkout with PayPal</button>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let cartItemsDiv = document.getElementById("cart-items");
+
+        function displayCart() {
+            cartItemsDiv.innerHTML = "";
+            cart.forEach((item, index) => {
+                let div = document.createElement("div");
+                div.innerHTML = `${item.name} - $${item.price} x ${item.quantity} 
+                    <button onclick="removeItem(${index})">Remove</button>`;
+                cartItemsDiv.appendChild(div);
+            });
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            displayCart();
+        }
+
+        document.getElementById("checkout").addEventListener("click", function() {
+            let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            window.location.href = https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=yourpaypalemail@example.com&amount=${total}&currency_code=USD;
+        });
+
+        displayCart();
+    </script>
+</body>
+</html>
